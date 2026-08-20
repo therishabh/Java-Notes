@@ -6,9 +6,9 @@
 
 ## 1.1 `static` — Actual Meaning
 
-Java mein `static` ka simplest mental model hai:
+The simplest mental model for `static` in Java is:
 
-> **`static` member class se associated hota hai, kisi particular object/instance se nahi.**
+> **A `static` member is associated with the class, not with any particular object/instance.**
 
 Example:
 
@@ -19,7 +19,7 @@ class User {
 }
 ```
 
-Agar:
+If:
 
 ```java
 User u1 = new User();
@@ -29,22 +29,22 @@ u1.name = "John";
 u2.name = "Mike";
 ```
 
-To:
+Then:
 
 ```text
 u1.name → John
 u2.name → Mike
 ```
 
-kyunki `name` instance field hai.
+because `name` is an instance field.
 
-Lekin:
+But:
 
 ```java
 User.applicationName
 ```
 
-sirf **ek class-level value** represent karta hai.
+represents only **one class-level value**.
 
 Conceptually:
 
@@ -59,7 +59,7 @@ User Class
      u1      u2
 ```
 
-`u1` aur `u2` ke paas `applicationName` ki separate copy nahi hoti.
+`u1` and `u2` do not have separate copies of `applicationName`.
 
 ---
 
@@ -76,7 +76,7 @@ class Counter {
 }
 ```
 
-Ab:
+Now:
 
 ```java
 Counter c1 = new Counter();
@@ -98,11 +98,11 @@ Important point:
 count
 ```
 
-object-specific nahi hai.
+is not object-specific.
 
-Har object creation par same static field modify ho raha hai.
+On every object creation, the same static field is being modified.
 
-### Instance field hota:
+### If it were an instance field:
 
 ```java
 class Counter {
@@ -110,7 +110,7 @@ class Counter {
 }
 ```
 
-To:
+Then:
 
 ```java
 Counter c1 = new Counter();
@@ -126,13 +126,13 @@ c1.count = 1
 c2.count = 0
 ```
 
-Whereas static case:
+Whereas in the static case:
 
 ```text
 Counter.count = 1
 ```
 
-and second object ke through increment karoge to:
+and if you increment through the second object:
 
 ```text
 Counter.count = 2
@@ -140,7 +140,7 @@ Counter.count = 2
 
 ---
 
-# 1.3 Static Member ko kaise access karein?
+# 1.3 How should you access a static member?
 
 Preferred approach:
 
@@ -156,7 +156,7 @@ Math.PI
 Integer.MAX_VALUE
 ```
 
-Technically Java object reference se bhi static member access allow karta hai:
+Technically, Java also allows accessing a static member through an object reference:
 
 ```java
 Counter c = new Counter();
@@ -164,7 +164,7 @@ Counter c = new Counter();
 System.out.println(c.count);
 ```
 
-Lekin **ye recommended nahi hai**.
+But **this is not recommended**.
 
 Better:
 
@@ -172,7 +172,7 @@ Better:
 Counter.count
 ```
 
-because `count` object ka nahi, class ka member hai.
+because `count` is a member of the class, not of the object.
 
 ### Interview trap
 
@@ -186,9 +186,9 @@ Answer:
 
 ---
 
-# 1.4 Static Field ka lifecycle
+# 1.4 Lifecycle of a Static Field
 
-Static members class ke initialization ke saath associated hote hain.
+Static members are associated with class initialization.
 
 Simplified mental model:
 
@@ -202,9 +202,9 @@ Static blocks executed
 Class is ready to use
 ```
 
-Static initialization generally **class ke initialization phase mein once** hoti hai.
+Static initialization generally happens **once, during the class initialization phase**.
 
-Ye important hai:
+This is important:
 
 > Static initialization is associated with the class, not every object creation.
 
@@ -242,7 +242,7 @@ e2
  └── name = "Mike"
 ```
 
-Isliye:
+Therefore:
 
 ```java
 e1.company
@@ -250,7 +250,7 @@ e2.company
 Employee.company
 ```
 
-teeno same static field ko refer karte hain.
+all three refer to the same static field.
 
 ---
 
@@ -273,11 +273,11 @@ You can write:
 System.out.println(Child.value);
 ```
 
-But important conceptual point:
+But an important conceptual point:
 
 > Static members are not polymorphic like instance methods.
 
-Inheritance ke context mein static members ka behavior instance members se different hota hai.
+In the context of inheritance, the behaviour of static members differs from that of instance members.
 
 ---
 
@@ -307,13 +307,13 @@ Output:
 20
 ```
 
-Ye **field hiding** ka concept hai, polymorphic overriding nahi.
+This is the concept of **field hiding**, not polymorphic overriding.
 
 ---
 
-# 1.8 `static` ke important restrictions
+# 1.8 Important restrictions of `static`
 
-Static context ke andar directly instance members access nahi kar sakte.
+Inside a static context, you cannot directly access instance members.
 
 Example:
 
@@ -337,7 +337,7 @@ static method → no specific object
 instance field → belongs to an object
 ```
 
-JVM ko pata hi nahi hai ki **kis object's `value`** ki baat ho rahi hai.
+The JVM has no idea **which object's `value`** is being referred to.
 
 Correct:
 
@@ -352,11 +352,11 @@ static void test() {
 
 # 1.9 `final` — Actual Meaning
 
-`final` ka core meaning:
+The core meaning of `final`:
 
 > **Once a final variable is assigned, that variable cannot be assigned another value/reference.**
 
-But `final` ka behavior depend karta hai ki wo kis cheez par apply hua hai:
+But the behaviour of `final` depends on what it is applied to:
 
 * variable
 * reference
@@ -384,7 +384,7 @@ Because `age` cannot be reassigned.
 
 # 1.11 Final Reference — Very Important
 
-Ye interview ka favourite trap hai.
+This is a favourite interview trap.
 
 ```java
 final User user = new User();
@@ -392,11 +392,11 @@ final User user = new User();
 
 Many beginners assume:
 
-> User object immutable hai.
+> The User object is immutable.
 
 **Wrong.**
 
-`final` yahan **reference ko final** bana raha hai.
+Here, `final` makes **the reference final**.
 
 Conceptually:
 
@@ -413,7 +413,7 @@ You cannot do:
 user = new User(); // ERROR
 ```
 
-because `user` reference ko change kar rahe ho.
+because you are changing the `user` reference.
 
 But:
 
@@ -421,7 +421,7 @@ But:
 user.name = "Mike";
 ```
 
-possible ho sakta hai, assuming `name` mutable hai.
+may be possible, assuming `name` is mutable.
 
 So:
 
@@ -468,7 +468,7 @@ A `final` method cannot be overridden.
 
 Use case:
 
-> Parent class kisi method ke implementation ko subclasses se change nahi karwana chahta.
+> The parent class does not want subclasses to change the implementation of a particular method.
 
 ---
 
@@ -496,7 +496,7 @@ Classic example:
 String
 ```
 
-`String` Java mein final class hai.
+`String` is a final class in Java.
 
 ---
 
@@ -508,9 +508,9 @@ void process(final int value) {
 }
 ```
 
-Parameter ko reassign nahi kar sakte.
+You cannot reassign the parameter.
 
-For reference:
+For a reference:
 
 ```java
 void process(final User user) {
@@ -519,7 +519,7 @@ void process(final User user) {
 }
 ```
 
-Again same distinction:
+Again, the same distinction:
 
 ```text
 final reference ≠ immutable object
@@ -529,7 +529,7 @@ final reference ≠ immutable object
 
 # 1.15 `final` vs Immutability
 
-Ye distinction strongly yaad rakho.
+Remember this distinction firmly.
 
 ### `final`
 
@@ -551,30 +551,30 @@ final User user = new User();
 user.name = "John";
 ```
 
-Possible if `User` mutable hai.
+Possible if `User` is mutable.
 
-Immutable object mein:
+In an immutable object:
 
 ```java
 user.name = "John";
 ```
 
-allowed hi nahi hoga because object ka state change karne ka mechanism expose nahi kiya gaya.
+would not be allowed at all, because no mechanism to change the object's state has been exposed.
 
 ---
 
 # 1.16 `static final`
 
-Ab dono combine karte hain:
+Now let's combine the two:
 
 ```java
 public static final int MAX_RETRIES = 3;
 ```
 
-Iska meaning:
+Its meaning:
 
 * `static` → class-level
-* `final` → reassignment allowed nahi
+* `final` → reassignment not allowed
 
 So:
 
@@ -586,7 +586,7 @@ one class-level value
 cannot be reassigned
 ```
 
-Ye constants ke liye commonly use hota hai.
+This is commonly used for constants.
 
 Example:
 
@@ -627,13 +627,13 @@ UPPER_CASE_WITH_UNDERSCORES
 
 # 1.18 Compile-Time Constants
 
-Ye thoda interview-level important distinction hai.
+This is a slightly interview-level important distinction.
 
 ```java
 static final int MAX = 10;
 ```
 
-primitive/String values jo compile time par determine ho sakti hain, **compile-time constants** ho sakti hain.
+Primitive/String values that can be determined at compile time can be **compile-time constants**.
 
 Example:
 
@@ -647,7 +647,7 @@ But:
 static final int MAX = getMax();
 ```
 
-ye normal final static field hai, necessarily compile-time constant nahi.
+this is a normal final static field, not necessarily a compile-time constant.
 
 Similarly:
 
@@ -655,11 +655,11 @@ Similarly:
 static final Integer MAX = 10;
 ```
 
-reference type hone ke karan primitive compile-time constant jaisa behavior nahi.
+Because it is a reference type, it does not behave like a primitive compile-time constant.
 
-Interview mein broadly yaad rakho:
+For interviews, remember broadly:
 
-> `static final` means constant-like class-level value, but every `static final` field is not necessarily a compile-time constant.
+> `static final` means a constant-like class-level value, but every `static final` field is not necessarily a compile-time constant.
 
 ---
 
@@ -667,21 +667,21 @@ Interview mein broadly yaad rakho:
 
 * `static` → class-level association.
 * Instance field → object-level state.
-* Static field ki single class-level state hoti hai.
-* Static members ko preferably `ClassName.member` se access karo.
-* Static context directly instance members access nahi kar sakta.
-* `final` variable ko reassign nahi kar sakte.
-* `final` reference ka matlab object immutable nahi hai.
-* `final` method override nahi ho sakta.
-* `final` class extend nahi ho sakti.
-* `static final` constants ke liye commonly use hota hai.
+* A static field has a single class-level state.
+* Access static members preferably via `ClassName.member`.
+* A static context cannot directly access instance members.
+* A `final` variable cannot be reassigned.
+* A `final` reference does not mean the object is immutable.
+* A `final` method cannot be overridden.
+* A `final` class cannot be extended.
+* `static final` is commonly used for constants.
 * `static` + inheritance ≠ normal runtime polymorphism.
 
 ---
 
 # 2. Static Methods
 
-## 2.1 Static Method kya hai?
+## 2.1 What is a Static Method?
 
 ```java
 class MathUtils {
@@ -698,7 +698,7 @@ Call:
 MathUtils.add(10, 20);
 ```
 
-Yahan `add()` ko call karne ke liye object ki requirement nahi hai.
+Here, calling `add()` does not require an object.
 
 Reason:
 
@@ -769,9 +769,9 @@ Difference:
 
 ---
 
-# 2.3 Static Method kya access kar sakta hai?
+# 2.3 What can a static method access?
 
-Static method directly access kar sakta hai:
+A static method can directly access:
 
 ```java
 static int count;
@@ -795,13 +795,13 @@ Because `value` requires an object.
 
 ---
 
-# 2.4 Why `this` cannot be used?
+# 2.4 Why can't `this` be used?
 
-`this` ka meaning hota hai:
+`this` means:
 
-> current object
+> the current object
 
-But static method ko invoke karne ke liye current object required hi nahi.
+But invoking a static method does not require a current object at all.
 
 Example:
 
@@ -823,7 +823,7 @@ therefore no `this`
 
 ---
 
-# 2.5 Static Method aur Inheritance
+# 2.5 Static Methods and Inheritance
 
 Important interview question:
 
@@ -831,7 +831,7 @@ Important interview question:
 
 **No.**
 
-Static methods **override nahi hoti**, they are **hidden**.
+Static methods **are not overridden**, they are **hidden**.
 
 Example:
 
@@ -865,7 +865,7 @@ Parent
 Child
 ```
 
-Ye runtime polymorphism nahi hai.
+This is not runtime polymorphism.
 
 ---
 
@@ -899,22 +899,22 @@ Output:
 Parent
 ```
 
-Instance method hota to runtime object determine karta:
+Had it been an instance method, the runtime object would decide:
 
 ```text
 reference type → Parent
 actual object → Child
 ```
 
-and overridden instance method → `Child`
+and the overridden instance method → `Child`
 
-But static method mein:
+But for a static method:
 
-> Method resolution reference/class type ke basis par hota hai, runtime object polymorphism ke basis par nahi.
+> Method resolution happens based on the reference/class type, not based on runtime object polymorphism.
 
 ---
 
-# 2.7 Static Methods kab use karein?
+# 2.7 When should you use static methods?
 
 Good use cases:
 
@@ -943,28 +943,28 @@ User.createDefaultUser()
 Config.getDefaultTimeout()
 ```
 
-But har method ko static banana good design nahi.
+But making every method static is not good design.
 
-Agar operation ko object state ki zarurat hai, instance method more appropriate hai.
+If an operation needs object state, an instance method is more appropriate.
 
 ---
 
 ## 🔑 Must Remember — Static Methods
 
-* Static method class-level hota hai.
-* Object create kiye bina call kar sakte ho.
-* Static method directly instance fields/methods access nahi kar sakta.
-* `this` static method mein available nahi.
-* Static methods override nahi hote.
-* Static method inheritance mein **hide** ho sakta hai.
-* Static method runtime polymorphism participate nahi karta.
-* Stateless utility operations ke liye static useful hai.
+* A static method is class-level.
+* You can call it without creating an object.
+* A static method cannot directly access instance fields/methods.
+* `this` is not available in a static method.
+* Static methods are not overridden.
+* A static method can be **hidden** in inheritance.
+* A static method does not participate in runtime polymorphism.
+* Static is useful for stateless utility operations.
 
 ---
 
 # 3. Static Blocks
 
-Static block Java ka ek particularly important concept hai.
+The static block is a particularly important concept in Java.
 
 Syntax:
 
@@ -979,9 +979,9 @@ class Demo {
 
 ---
 
-# 3.1 Static Block kya hai?
+# 3.1 What is a Static Block?
 
-Static block ek initialization block hai jo **class initialization ke time execute hota hai**.
+A static block is an initialization block that **executes at the time of class initialization**.
 
 Example:
 
@@ -997,17 +997,17 @@ class Demo {
 }
 ```
 
-Static block ka primary purpose:
+The primary purpose of a static block:
 
-> **Complex static initialization logic perform karna.**
+> **To perform complex static initialization logic.**
 
 ---
 
-# 3.2 Static Block kab execute hota hai?
+# 3.2 When does a Static Block execute?
 
 Important:
 
-> Static block object create hone par execute nahi hota.
+> A static block does not execute on object creation.
 
 It executes when the class is **initialized by the JVM**.
 
@@ -1023,7 +1023,7 @@ Static blocks
 Class ready
 ```
 
-Generally ek class initialization ke liye static initialization **once** hoti hai.
+Generally, static initialization happens **once** per class initialization.
 
 ---
 
@@ -1071,7 +1071,7 @@ Constructor
 
 Why?
 
-`Demo` class first time initialized hoti hai jab `new Demo()` execute hota hai.
+The `Demo` class is initialized for the first time when `new Demo()` executes.
 
 Then:
 
@@ -1087,32 +1087,32 @@ new Demo()
 constructor
 ```
 
-Second `new Demo()` par:
+On the second `new Demo()`:
 
 ```text
 static block ❌
 constructor ✅
 ```
 
-Because class already initialized hai.
+Because the class is already initialized.
 
 ---
 
 # 3.4 Static Block vs Constructor
 
-| Static Block                            | Constructor                         |
-| --------------------------------------- | ----------------------------------- |
-| Class initialization se related         | Object initialization se related    |
-| Usually once per class initialization   | Every object creation               |
-| Object required nahi                    | Object creation ke saath            |
-| Static members initialize kar sakta hai | Instance state initialize karta hai |
-| `this` unavailable                      | `this` available                    |
+| Static Block                          | Constructor                        |
+| ------------------------------------- | ---------------------------------- |
+| Related to class initialization       | Related to object initialization   |
+| Usually once per class initialization | Every object creation              |
+| No object required                    | Happens with object creation       |
+| Can initialize static members         | Initializes instance state         |
+| `this` unavailable                    | `this` available                   |
 
 ---
 
 # 3.5 Static Block vs Instance Initialization Block
 
-Java mein initialization block bhi hota hai:
+Java also has an instance initialization block:
 
 ```java
 {
@@ -1153,7 +1153,7 @@ Instance block
 Constructor
 ```
 
-But second object:
+But the second object:
 
 ```java
 new Demo();
@@ -1166,7 +1166,7 @@ Instance block
 Constructor
 ```
 
-Static block only once.
+The static block runs only once.
 
 ---
 
@@ -1230,9 +1230,9 @@ another = 30
 
 ---
 
-# 3.8 Can static block access instance fields?
+# 3.8 Can a static block access instance fields?
 
-Directly no:
+Not directly:
 
 ```java
 class Demo {
@@ -1257,7 +1257,7 @@ instance field unavailable directly
 
 ---
 
-# 3.9 Can static block have parameters?
+# 3.9 Can a static block have parameters?
 
 No.
 
@@ -1270,13 +1270,13 @@ static(int value) {
 
 is invalid syntax.
 
-Static block is not a method.
+A static block is not a method.
 
 ---
 
 # 3.10 Practical Use Cases
 
-Historically static blocks were often used for:
+Historically, static blocks were often used for:
 
 * static configuration
 * loading JDBC drivers
@@ -1298,7 +1298,7 @@ class Config {
 }
 ```
 
-Modern applications often prefer cleaner mechanisms depending on framework/design, but static initialization is still important to understand.
+Modern applications often prefer cleaner mechanisms depending on the framework/design, but static initialization is still important to understand.
 
 ---
 
@@ -1328,7 +1328,7 @@ Main
 
 Why?
 
-Before JVM invokes:
+Before the JVM invokes:
 
 ```java
 main()
@@ -1352,27 +1352,25 @@ Invoke main()
 
 ## 🔑 Must Remember — Static Blocks
 
-* Static block class initialization ke time execute hota hai.
-* Object creation required nahi.
-* Static block generally once per class initialization execute hota hai.
-* Multiple static blocks allowed hain.
-* Multiple blocks top-to-bottom execute hote hain.
-* Static block instance members directly access nahi kar sakta.
-* Static block constructor nahi hai.
-* Constructor every object creation par execute hota hai.
-* Static block class-level initialization ke liye useful hai.
+* A static block executes at the time of class initialization.
+* Object creation is not required.
+* A static block generally executes once per class initialization.
+* Multiple static blocks are allowed.
+* Multiple blocks execute top-to-bottom.
+* A static block cannot directly access instance members.
+* A static block is not a constructor.
+* A constructor executes on every object creation.
+* A static block is useful for class-level initialization.
 
 ---
 
 # 4. `String[] args` / Command-Line Arguments
 
-Ab:
+Now let's deeply understand:
 
 ```java
 public static void main(String[] args)
 ```
-
-ko deeply understand karte hain.
 
 ---
 
@@ -1382,9 +1380,9 @@ ko deeply understand karte hain.
 public
 ```
 
-means method JVM ke liye accessible hona chahiye.
+means the method must be accessible to the JVM.
 
-JVM ko application entry point invoke karna hota hai.
+The JVM has to invoke the application entry point.
 
 ---
 
@@ -1394,29 +1392,29 @@ JVM ko application entry point invoke karna hota hai.
 static
 ```
 
-means JVM ko `main()` call karne ke liye object create nahi karna padta.
+means the JVM does not have to create an object in order to call `main()`.
 
 This is important.
 
-Imagine agar main static nahi hota:
+Imagine if main were not static:
 
 ```java
 public void main(...)
 ```
 
-to JVM ko pehle decide karna padta:
+then the JVM would first have to decide:
 
 ```text
 Which object should I create?
 ```
 
-Java ka conventional entry point static hai:
+Java's conventional entry point is static:
 
 ```java
 public static void main(...)
 ```
 
-so JVM class level par method invoke kar sakti hai.
+so the JVM can invoke the method at the class level.
 
 ---
 
@@ -1426,21 +1424,21 @@ so JVM class level par method invoke kar sakti hai.
 void
 ```
 
-means method koi return value nahi deta.
+means the method does not return any value.
 
 ---
 
 # 4.4 `main`
 
-`main` specially recognized entry-point method name hai.
+`main` is the specially recognized entry-point method name.
 
-JVM application launch karte waqt suitable `main` method locate karti hai.
+When launching the application, the JVM locates a suitable `main` method.
 
 ---
 
 # 4.5 `String[]`
 
-Ye command-line arguments ka array hai.
+This is the array of command-line arguments.
 
 ```java
 String[]
@@ -1468,9 +1466,9 @@ Arguments conceptually:
 
 # 4.6 `args`
 
-`args` sirf variable ka naam hai.
+`args` is just the name of the variable.
 
-Ye valid hai:
+This is valid:
 
 ```java
 public static void main(String[] args)
@@ -1482,7 +1480,7 @@ but technically:
 public static void main(String[] values)
 ```
 
-bhi valid hai.
+is also valid.
 
 Even:
 
@@ -1490,21 +1488,21 @@ Even:
 public static void main(String[] x)
 ```
 
-valid hai.
+is valid.
 
-Important is:
+What matters is:
 
 ```java
 String[]
 ```
 
-and method signature/entry-point convention.
+and the method signature/entry-point convention.
 
-`args` keyword nahi hai.
+`args` is not a keyword.
 
 ---
 
-# 4.7 JVM `args` ko kaise populate karti hai?
+# 4.7 How does the JVM populate `args`?
 
 Suppose:
 
@@ -1512,7 +1510,7 @@ Suppose:
 java Demo John 30 India
 ```
 
-JVM application ko arguments provide karti hai:
+The JVM provides the arguments to the application:
 
 ```text
 args[0] = "John"
@@ -1522,7 +1520,7 @@ args[2] = "India"
 
 Notice:
 
-> **All command-line arguments initially Strings hote hain.**
+> **All command-line arguments are initially Strings.**
 
 Even:
 
@@ -1579,7 +1577,7 @@ then:
 
 Important:
 
-> `args` generally empty array hota hai when no arguments are supplied, not necessarily `null`.
+> `args` is generally an empty array when no arguments are supplied, not necessarily `null`.
 
 ---
 
@@ -1614,13 +1612,13 @@ would result in:
 ArrayIndexOutOfBoundsException
 ```
 
-because array length 2 hai.
+because the array length is 2.
 
 ---
 
 # 4.10 Parsing Arguments
 
-Because all values Strings hain:
+Because all values are Strings:
 
 ```java
 args[1]
@@ -1632,7 +1630,7 @@ returns:
 "30"
 ```
 
-If integer chahiye:
+If you need an integer:
 
 ```java
 int age = Integer.parseInt(args[1]);
@@ -1707,7 +1705,7 @@ Conceptually:
 
 One important difference:
 
-Node.js `process.argv` usually includes Node executable and script path as initial elements.
+Node.js `process.argv` usually includes the Node executable and script path as the initial elements.
 
 For:
 
@@ -1752,19 +1750,19 @@ args
 
 * `args` is just a variable name.
 * It represents command-line arguments.
-* All arguments initially `String` values hote hain.
-* `args.length` number of arguments deta hai.
-* `args[0]` first argument hai.
+* All arguments are initially `String` values.
+* `args.length` gives the number of arguments.
+* `args[0]` is the first argument.
 * No arguments → empty argument array.
-* Numeric conversion manually karni hoti hai.
-* Java mein `args` roughly Node.js ke `process.argv` ka equivalent concept hai.
-* `main()` static hai so JVM ko application start karne ke liye object create nahi karna padta.
+* Numeric conversion has to be done manually.
+* In Java, `args` is roughly the equivalent concept of Node.js's `process.argv`.
+* `main()` is static so that the JVM does not have to create an object to start the application.
 
 ---
 
 # 5. Java Class Initialization & Execution Order
 
-Ab sab concepts ko ek saath connect karte hain.
+Now let's connect all the concepts together.
 
 Consider:
 
@@ -1823,9 +1821,9 @@ Let's walk through it.
 
 ## Step 1 — `Main` class initialization
 
-JVM ko `main()` execute karna hai.
+The JVM has to execute `main()`.
 
-So `Main` class initialize hoti hai.
+So the `Main` class is initialized.
 
 ```java
 static {
@@ -1857,9 +1855,9 @@ Main method
 
 ## Step 3 — `new Demo()`
 
-Ab first time `Demo` class ko use kiya ja raha hai.
+Now the `Demo` class is being used for the first time.
 
-JVM ko `Demo` class initialize karni hogi.
+The JVM will have to initialize the `Demo` class.
 
 First:
 
@@ -1893,13 +1891,13 @@ Output:
 Static block
 ```
 
-Ab `Demo` class initialization complete.
+Now `Demo` class initialization is complete.
 
 ---
 
 ## Step 4 — Instance initialization
 
-Now actual object create ho raha hai.
+Now the actual object is being created.
 
 Instance field:
 
@@ -1913,7 +1911,7 @@ executes:
 Instance field initialization
 ```
 
-Then instance initialization block:
+Then the instance initialization block:
 
 ```java
 {
@@ -1921,7 +1919,7 @@ Then instance initialization block:
 }
 ```
 
-Then constructor:
+Then the constructor:
 
 ```java
 Demo() {
@@ -1945,7 +1943,7 @@ Constructor
 Demo d2 = new Demo();
 ```
 
-`Demo` already initialized hai.
+`Demo` is already initialized.
 
 Therefore:
 
@@ -1954,7 +1952,7 @@ Static field initialization ❌
 Static block ❌
 ```
 
-But new object create ho raha hai:
+But a new object is being created:
 
 ```text
 Instance field initialization
@@ -1986,7 +1984,7 @@ Constructor
 
 # High-Level Execution Model
 
-Interview ke liye isko is mental model se yaad rakho:
+For interviews, remember it with this mental model:
 
 ```text
 CLASS INITIALIZATION
@@ -2010,9 +2008,9 @@ CLASS INITIALIZATION
                  └── Constructor
 ```
 
-Ek important nuance:
+One important nuance:
 
-> JVM specification mein class loading, linking aur initialization technically separate phases hain. Upar wala diagram interview-level simplified model hai; "class loading" ko directly "static fields execute" ke equivalent nahi samajhna chahiye.
+> In the JVM specification, class loading, linking and initialization are technically separate phases. The diagram above is an interview-level simplified model; "class loading" should not be understood as directly equivalent to "static fields execute".
 
 ---
 
@@ -2037,7 +2035,7 @@ Ek important nuance:
 
 # 7. `final` vs JavaScript `const`
 
-This comparison thoda subtle hai.
+This comparison is a bit subtle.
 
 Java:
 
@@ -2068,9 +2066,9 @@ But:
 
 > **`final` is not exactly the same as JavaScript `const`.**
 
-Java mein `final` variables, methods, classes aur parameters par bhi apply ho sakta hai.
+In Java, `final` can also be applied to variables, methods, classes and parameters.
 
-JavaScript `const` mainly variable binding declaration hai.
+JavaScript's `const` is mainly a variable binding declaration.
 
 ---
 
@@ -2285,7 +2283,7 @@ public static void main(int value) {
 }
 ```
 
-But JVM's application entry point is the recognized `main` signature.
+But the JVM's application entry point is the recognized `main` signature.
 
 So simply creating:
 
@@ -2301,7 +2299,7 @@ doesn't make it another application entry point.
 
 Yes.
 
-But JVM will look for the valid application entry-point form.
+But the JVM will look for the valid application entry-point form.
 
 For example:
 
@@ -2339,7 +2337,7 @@ does not satisfy the conventional entry-point requirement.
 
 Because an application can receive **zero, one, or many command-line arguments**.
 
-Array naturally represents a variable-length ordered collection.
+An array naturally represents a variable-length ordered collection.
 
 ---
 
@@ -2387,7 +2385,7 @@ would cause an index-out-of-bounds error.
 
 # 9. Tricky Interview Code
 
-Ye type ke questions interview mein kaafi useful hain.
+These types of questions are quite useful in interviews.
 
 ### Question
 
@@ -2431,7 +2429,7 @@ Parent
 
 Why?
 
-Because `static` members runtime polymorphism follow nahi karte.
+Because `static` members do not follow runtime polymorphism.
 
 ```text
 Reference type = Parent
@@ -2564,7 +2562,7 @@ Remember:
 final User user
 ```
 
-does **not** mean immutable object.
+does **not** mean an immutable object.
 
 ---
 
@@ -2661,7 +2659,7 @@ args.length = 2
 
 # Final Mental Model
 
-Agar in chaar topics ko ek single mental model mein compress karna ho, to ye yaad rakho:
+If you had to compress these four topics into a single mental model, remember this:
 
 ```text
                  JAVA CLASS
@@ -2683,7 +2681,7 @@ Agar in chaar topics ko ek single mental model mein compress karna ho, to ye yaa
    class initialization
 ```
 
-Aur `final` ko iske upar ek **restriction** samjho:
+And think of `final` as a **restriction** layered on top of this:
 
 ```text
 final variable → no reassignment
@@ -2707,7 +2705,7 @@ means:
         CONSTANT-LIKE VALUE
 ```
 
-Aur `main()` ko connect karo:
+And connect `main()` to it:
 
 ```java
 public static void main(String[] args)
@@ -2717,5 +2715,5 @@ public static void main(String[] args)
        └── command-line String array
 ```
 
-**Interview ke liye sabse important distinction:**
-`static` ka relation **class vs object** se hai, jabki `final` ka relation **reassignment / inheritance / overriding restriction** se hai. Dono ko `static final` mein combine karne par ek class-level value milti hai jise reassign nahi kiya ja sakta.
+**The most important distinction for interviews:**
+`static` is about **class vs object**, whereas `final` is about **reassignment / inheritance / overriding restrictions**. Combining both into `static final` gives you a class-level value that cannot be reassigned.
